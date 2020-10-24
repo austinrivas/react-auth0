@@ -1,0 +1,21 @@
+
+version: '3.6'
+volumes:
+  db_data:
+services:
+  postgres:
+    image: postgres:12.4
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.2
+    depends_on:
+      - 'postgres'
+    restart: always
+    environment:
+      HASURA_GRAPHQL_ADMIN_SECRET: '${HASURA_GRAPHQL_ADMIN_SECRET}'
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "${HASURA_JWK_URL}"}'

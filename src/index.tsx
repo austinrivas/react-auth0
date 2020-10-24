@@ -7,15 +7,23 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 console.log('process.env', process.env);
 
-const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
-const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
+const {
+  REACT_APP_AUTH0_CLIENT_ID,
+  REACT_APP_AUTH0_DOMAIN,
+  REACT_APP_AUTH0_AUDIENCE
+} = process.env;
 
-if (AUTH0_CLIENT_ID && AUTH0_DOMAIN) {
+if (
+  REACT_APP_AUTH0_CLIENT_ID && 
+  REACT_APP_AUTH0_DOMAIN && 
+  REACT_APP_AUTH0_AUDIENCE
+  ) {
   ReactDOM.render(
     <Auth0Provider
-      domain="austinrivas.us.auth0.com"
-      clientId={AUTH0_CLIENT_ID}
+      domain={REACT_APP_AUTH0_DOMAIN}
+      clientId={REACT_APP_AUTH0_CLIENT_ID}
       redirectUri={window.location.origin}
+      audience={REACT_APP_AUTH0_AUDIENCE}
     >
       <App />
     </Auth0Provider>,
