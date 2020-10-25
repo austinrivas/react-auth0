@@ -1,5 +1,6 @@
 import React from "react";
 import { gql, useSubscription } from '@apollo/client';
+import Company from "./Company";
 
 const SUB_COMPANIES = gql`
   subscription {
@@ -16,11 +17,12 @@ export default function Companies() {
     return <div>Loading Companies...</div>
   } else if (data) {
     const companies = data?.companies;
+    console.log('companies', companies);
     return (
       <div>
         <p>Companies</p>
         <ul>
-          {companies.map(({ id }: { id: string }) => <li key={id}>{id}</li>)}
+          {companies.map(Company)}
         </ul>
       </div>
     )

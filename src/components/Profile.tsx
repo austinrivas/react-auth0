@@ -30,7 +30,7 @@ export default function Profile(
   if (loading) {
     return <div>loading user data...</div>
   } else if (current_user) {
-    console.log('data', current_user);
+    console.log('current_user', current_user);
     const cUser = current_user[0];
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
