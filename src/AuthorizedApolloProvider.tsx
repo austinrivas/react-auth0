@@ -16,6 +16,8 @@ import ErrorMessage from './components/ErrorMessage'
 import isServerError from './client/isServerError'
 import { BatchHttpLink } from "@apollo/client/link/batch-http"
 
+declare const window: any;
+
 function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
   return <ErrorMessage 
     name="AuthorizedApolloProvider"
@@ -107,9 +109,10 @@ export default function AuthorizedApolloProvider(
       networkErrorLink,
       splitLink
     ]),
-    cache: cache,
-    connectToDevTools: true
+    cache: cache
   });
+
+  window.__APOLLO_CLIENT__ = apolloClient;
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
