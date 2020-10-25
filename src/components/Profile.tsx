@@ -1,7 +1,7 @@
-import React from "react";
-import { gql, useQuery } from '@apollo/client';
-import LogoutButton from './LogoutButton';
+import React from "react"
+import { gql, useQuery, useSubscription } from '@apollo/client'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
+import Companies from './Companies'
 import ErrorMessage from './ErrorMessage';
 
 function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
@@ -12,9 +12,12 @@ function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
   />
 }
 
-const GET_CURRENT_USER = gql`
-  query current_user {
-    id
+const GET_CURRENT_USER_ID = gql`
+  query {
+    current_user {
+      id
+      auth0_id
+    }
   }
 `;
 
@@ -22,24 +25,29 @@ export default function Profile(
   { user }: 
   { user: any; }
   ) {
-  const { loading, error, data } = useQuery(GET_CURRENT_USER);
+  const { loading, error, data: { current_user } } = useQuery(GET_CURRENT_USER_ID);
 
   if (loading) {
     return <div>loading user data...</div>
-  } else if (data) {
-    console.log(data)
+  } else if (current_user) {
+    console.log('data', current_user);
+    const cUser = current_user[0];
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div>
           <img src={user.picture} alt={user.name} />
           <h2>{user.name}</h2>
           <p>{user.email}</p>
-          <p>{data.current_user.id}</p>
-          <LogoutButton />
+          <p>hasura id: {cUser.id}</p>
+          <p>hasura auth0_id: {cUser.auth0_id}</p>
+          <Companies />
         </div>
       </ErrorBoundary>
     );
+  } else if(error) {
+    if (error) throw error
+    else throw new Error('Undefined Profile State')
   } else {
-    throw error
+    throw new Error('User not found.')
   }
 };

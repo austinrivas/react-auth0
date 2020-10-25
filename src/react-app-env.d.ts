@@ -7,6 +7,7 @@ namespace NodeJS {
     REACT_APP_AUTH0_DOMAIN: string;
     REACT_APP_AUTH0_AUDIENCE: string;
     REACT_APP_HASURA_GRAPHQL_WSS_ENDPOINT: string;
+    REACT_APP_HASURA_GRAPHQL_HTTPS_ENDPOINT: string;
     NODE_ENV: 'development' | 'production';
   }
 }
