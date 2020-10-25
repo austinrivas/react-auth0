@@ -4,8 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from "@auth0/auth0-react";
-import { ErrorBoundary } from 'react-error-boundary'
-import ErrorFallback from './ErrorFallback'
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
+import ErrorMessage from './components/ErrorMessage';
+
+function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
+  return <ErrorMessage 
+    name="Root"
+    error={error}
+    resetErrorBoundary={resetErrorBoundary}
+  />
+}
 
 const {
   REACT_APP_AUTH0_CLIENT_ID,
@@ -22,7 +30,7 @@ if (
   ) {
  
   ReactDOM.render(
-    <ErrorBoundary fallback={<div>Error!</div>}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Auth0Provider
         domain={REACT_APP_AUTH0_DOMAIN}
         clientId={REACT_APP_AUTH0_CLIENT_ID}
