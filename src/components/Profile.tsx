@@ -1,5 +1,5 @@
 import React from "react"
-import { gql, useQuery, useSubscription } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 import Companies from './Companies'
 import ErrorMessage from './ErrorMessage';
