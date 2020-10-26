@@ -8,7 +8,7 @@ import LogoutButton from './components/LogoutButton'
 import Profile from './components/Profile'
 import ErrorMessage from './components/ErrorMessage'
 import { InMemoryCache } from '@apollo/client';
-import AuthorizedApolloProvider from './AuthorizedApolloProvider'
+import AuthorizedApolloProvider from './client/AuthorizedApolloProvider'
 
 function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
   return <ErrorMessage 
@@ -24,6 +24,7 @@ export default function App({ cache }: { cache: InMemoryCache }) {
   if (isLoading) {
     return <div>Loading App...</div>;
   } else if (isAuthenticated && user) {
+    console.log(user);
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <AuthorizedApolloProvider cache={cache}>

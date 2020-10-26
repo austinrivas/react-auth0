@@ -19,7 +19,8 @@ export default function Users(
   {role_id, company_id}: {role_id: string, company_id: string}
   ) {
   const { loading, error, data } = useQuery(GET_USERS, {
-    variables: {role_id: role_id, company_id: company_id}
+    variables: {role_id: role_id, company_id: company_id},
+    fetchPolicy: "cache-and-network"
   });
 
   if (loading) {

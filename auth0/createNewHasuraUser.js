@@ -20,9 +20,9 @@ function (user, context, callback) {
       headers: {
         'content-type' : 'application/json',
         'x-hasura-client-name': 'auth0-rule-createNewHasuraUser',
-        'x-hasura-admin-secret': 'hasura' 
+        'x-hasura-admin-secret': configuration.HASURA_ADMIN_SECRET 
       },
-      url:   'https://sterling-eft-20.hasura.app/v1/graphql',
+      url:   configuration.HASURA_URL,
       body:  JSON.stringify({ "query": insertUserQuery, "variables": variables })
   }, function(error, response, body){
        console.log('error', error);

@@ -25,7 +25,9 @@ export default function Profile(
   { user }: 
   { user: any; }
   ) {
-  const { loading, error, data } = useQuery(GET_CURRENT_USER_ID);
+  const { loading, error, data } = useQuery(GET_CURRENT_USER_ID, {
+    fetchPolicy: 'network-only'
+  });
 
   if (loading) {
     return <div>loading user data...</div>
@@ -38,9 +40,13 @@ export default function Profile(
           <img src={user.picture} alt={user.name} />
           <h2>{user.name}</h2>
           <p>{user.email}</p>
-          <p>hasura id: {cUser.id}</p>
-          <p>hasura auth0_id: {cUser.auth0_id}</p>
-          <Companies />
+          { cUser && 
+            <div>
+              <p>hasura id: {cUser.id}</p>
+              <p>hasura auth0_id: {cUser.auth0_id}</p>
+              <Companies />
+            </div>
+          }
         </div>
       </ErrorBoundary>
     );

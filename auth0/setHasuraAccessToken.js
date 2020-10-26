@@ -14,14 +14,13 @@ function (user, context, callback) {
       headers: {
         'content-type' : 'application/json',
         'x-hasura-client-name': 'auth0-rule-setHasuraAccessToken', 
-        'x-hasura-admin-secret': 'hasura'
+        'x-hasura-admin-secret': configuration.HASURA_ADMIN_SECRET
       },
-      url:   'https://sterling-eft-20.hasura.app/v1/graphql',
+      url:   configuration.HASURA_URL,
       body:  JSON.stringify({ "query": findUserQuery, "variables": variables })
   }, function(error, response, body){
-      console.log('error', error);
       const { data } = JSON.parse(body);
-      if (data && data.users) {
+      if (data && data.users && data.users.length) {
         const users = data.users;
         switch(users.length) {
           case 1:
@@ -36,15 +35,33 @@ function (user, context, callback) {
             break;
           case 0:
             console.log('No user found');
+            context.accessToken[namespace] =
+            {
+              'x-hasura-default-role': 'anonymous',
+              'x-hasura-allowed-roles': ['anonymous'],
+              'x-hasura-auth0-id': user.user_id
+            };
             callback(null, user, context);
             break;
           default:
             console.log('Duplicate users exist');
+            context.accessToken[namespace] =
+            {
+              'x-hasura-default-role': 'anonymous',
+              'x-hasura-allowed-roles': ['anonymous'],
+              'x-hasura-auth0-id': user.user_id
+            };
             callback(null, user, context);
             break;
         }
       } else {
-        console.log('response error');
+        console.log('response error', error);
+        context.accessToken[namespace] =
+        {
+          'x-hasura-default-role': 'anonymous',
+          'x-hasura-allowed-roles': ['anonymous'],
+          'x-hasura-auth0-id': user.user_id
+        };
         callback(null, user, context);
       }
   });

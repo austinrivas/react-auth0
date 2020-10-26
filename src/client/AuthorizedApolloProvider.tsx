@@ -12,8 +12,8 @@ import { setContext } from '@apollo/client/link/context'
 import { useAuth0 } from "@auth0/auth0-react"
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 import { onError } from "@apollo/client/link/error"
-import ErrorMessage from './components/ErrorMessage'
-import isServerError from './client/isServerError'
+import ErrorMessage from '../components/ErrorMessage'
+import isServerError from './isServerError'
 import { BatchHttpLink } from "@apollo/client/link/batch-http"
 
 declare const window: any;
@@ -77,6 +77,7 @@ export default function AuthorizedApolloProvider(
       reconnect: true,
       connectionParams: async () => {
         const auth0Token = await getAccessTokenSilently();
+        console.log('auth0Token', auth0Token);
         return {
           headers: {
             Authorization: formatAuthHeader(auth0Token)
