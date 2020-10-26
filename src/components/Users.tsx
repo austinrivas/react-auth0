@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import User from "./User"
 
 const GET_USERS = gql`
-  query ($company_id: String!, $role_id: String1) {
+  query ($company_id: String!, $role_id: String!) {
     users(where: {flattened_user_company_roles: {role_id: {_eq: $role_id}, company_id: {_eq: $company_id}}}) {
       id
       auth0_id

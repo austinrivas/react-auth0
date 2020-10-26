@@ -25,13 +25,13 @@ export default function Profile(
   { user }: 
   { user: any; }
   ) {
-  const { loading, error, data: { current_user } } = useQuery(GET_CURRENT_USER_ID);
+  const { loading, error, data } = useQuery(GET_CURRENT_USER_ID);
 
   if (loading) {
     return <div>loading user data...</div>
-  } else if (current_user) {
-    console.log('current_user', current_user);
-    const cUser = current_user[0];
+  } else if (data) {
+    console.log('current_user', data?.current_user);
+    const cUser = data?.current_user[0];
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div>
